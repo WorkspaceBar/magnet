@@ -1,0 +1,48 @@
+# Development source and tests
+test/**
+tests/**
+.vscode/**
+.github/**
+.vscode-test/**
+coverage/**
+
+# Build and development configuration
+esbuild.js
+tsconfig*.json
+eslint.config.*
+.eslintrc*
+.prettierrc*
+.prettierignore
+*.tsbuildinfo
+
+# Documentation and repository files
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE*
+NOTICE*
+.gitignore
+.gitattributes
+.npmignore
+.editorconfig
+
+# Logs and temporary files
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+**/npm-debug.log*
+**/yarn-debug.log*
+**/pnpm-debug.log*
+
+# Source maps
+**/*.map
+
+# Unused Transformers.js browser distribution
+node_modules/@huggingface/transformers/dist/transformers.web.js
+
+# Browser ONNX runtime
+# Keep only after confirming Node-based Whisper works
+node_modules/onnxruntime-web/**
+
+# Do not exclude all node_modules
+# Runtime dependencies are required for Magnet

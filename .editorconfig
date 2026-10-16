@@ -1,0 +1,16 @@
+# EditorConfig link: https://editorconfig.org
+
+# Top level EditorConfig file
+root = true
+
+# Matches all files
+[*]
+
+# Indentation Style
+indent_size = 2
+
+# Indentation Style
+indent_style = tab
+
+# Line endings
+insert_final_newline = false

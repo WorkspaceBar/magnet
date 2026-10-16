@@ -1,0 +1,225 @@
+:root {
+	--lay-cont-bg-clr: #000000;
+	--mem-cont-bg-clr: #000000;
+	--msg-cont-bg-clr: #000000;
+	--user-input-cont-bg-clr: #000000;
+	--mem-lay-txt-clr: #a29e92;
+	--mem-lay-btm-bord-clr: #1f1f1f;
+	--mem-lay-bg-clr: #000000;
+	--user-msg-bub-txt-clr: #d1caca;
+	--user-msg-bub-bg-clr: #082f5e;
+	--assistant-msg-bub-txt-clr: #cbcbcb;
+	--assistant-msg-bub-bg-clr: #000000;
+	--assistant-thinking-msg-bub-txt-clr: #cbcbcb;
+	--assistant-thinking-msg-bub-bg-clr: #000000;
+	--user-input-cont-top-bord-clr: #1f1f1f;
+	--user-input-txt-clr: #d1caca;
+	--user-input-bg-clr: #000000;
+	--send-msg-btn-txt-clr: #d1caca;
+	--send-msg-btn-bg-clr: #000000;
+	--send-msg-btn-hover-bg-clr: #1f1f1f;
+	--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-size: 16px;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+	font-family: var(--font-family);
+	font-size: var(--font-size)
+}
+
+#memory-container {
+	padding: 9.6px;
+	font-size: 10px;
+	color: var(--mem-lay-txt-clr);
+	border-bottom: 1px solid var(--mem-lay-btm-bord-clr);
+	background-color: var(--mem-lay-bg-clr);
+	flex-shrink: 0;
+} /* Memory container */
+
+#layout-container {
+	height: 100vh;
+	background-color: var(--lay-cont-bg-clr);
+	display: flex;
+	flex-direction: column;
+} /* Layout container */
+
+.message-container {
+	padding: 9.6px 9.6px 0 9.6px;
+	gap: 25px;
+	background-color: var(--msg-cont-bg-clr);
+	overflow-y: auto; 
+	overflow-x: hidden;
+	display: flex; flex: 1;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.message-bubble {
+	min-width: 0;
+	max-width: 100%;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+} /* Message bubble */
+
+.message-bubble.user {
+	padding: 9.6px;
+	width: fit-content;
+	max-width: 100%;
+	color: var(--user-msg-bub-txt-clr);
+	border-radius: 8px;
+	border: 1px solid #073b6d;
+	background-color: var(--user-msg-bub-bg-clr);
+	align-self: flex-end;
+}
+
+message-bubble pre {
+	margin: 12px 0;
+}
+
+.message-bubble > div + pre,
+.message-bubble > pre + div {
+	margin-top: 12px;
+}
+
+/* no extra space at the very top or bottom of a bubble */
+.message-bubble > :first-child { margin-top: 0; }
+.message-bubble > :last-child  { margin-bottom: 0; }
+
+/* breathing room below the last message in the panel */
+.message-container {
+	padding-bottom: 20px;
+}
+
+.message-bubble.assistant {
+	width: 100%;
+	min-width: 0;
+	color: var(--assistant-msg-bub-txt-clr);
+	background-color: var(--assistant-msg-bub-bg-clr);
+	align-self: flex-start;
+}
+
+.message-bubble.assistant.assistant-thinking {
+	color: var(--assistant-thinking-msg-bub-txt-clr);
+} /* For AI thinking message bubble */
+
+.message-bubble pre {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: pre;
+	margin-block: 9.6px;
+}
+
+.message-bubble pre code {
+	white-space: pre;
+}
+
+.input-area {
+	background-color: var(--user-input-cont-bg-clr);
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--user-input-cont-top-bord-clr);
+}
+
+.input-row {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.input-row button {
+	align-self: flex-end; /* Pushes individual button actions to the bottom right */
+}
+
+.button-group {
+	height: fit-content;
+	display: flex;
+	justify-content: flex-end; /* Aligns both buttons side-by-side at the bottom right */
+	background-color: var(--user-input-bg-clr);
+}
+
+#user-input {
+	padding: 9.6px;
+	width: 100%;
+	height: 42px;
+	max-height: 600px;
+	border: none;
+	outline: none;
+	font-family: var(--font-family);
+	font-size: var(--font-size);
+	color: var(--user-input-txt-clr);
+	background-color: var(--user-input-bg-clr);
+	resize: none;
+}
+
+#send-button {
+	height: 42px;
+	width: 42px;
+	font-weight: 500;
+	color: var(--send-msg-btn-txt-clr);
+	border: none;
+	outline: none;
+	background-color: var(--send-msg-btn-bg-clr);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#send-button:hover {
+	background-color: var(--send-msg-btn-hover-bg-clr);
+}
+
+#send-button img {
+	vertical-align: middle;
+	pointer-events: none;
+}
+
+.code-block-wrapper {
+	margin: 9.6px 0 9.6px 0;
+	padding-bottom: 51px;
+	gap: 9.6px;
+	position: relative;
+	width: 100%;
+	min-width: 0;
+	border: 1px solid #2a2a2a;
+	border-radius: 9.6px;
+	background-color: #171717;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.code-block-wrapper pre {
+	margin: 0;
+}
+
+.copy-code-button {
+	padding: 9.6px;
+	position: absolute;
+	color: #d1caca;
+	background-color: #313131;
+	border: none;
+	border-radius: 4px;
+	width: 66px;
+	font-size: 11px;
+	font-weight: bold;
+	cursor: pointer;
+	bottom: 0;
+	right: 0;
+	margin: 9.6px;
+}
+
+.copy-code-button:hover {
+	background-color: #505050;
+}

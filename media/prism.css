@@ -1,0 +1,192 @@
+code[class*=language-] {
+	text-shadow: none;
+
+	font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+	font-size: 16px;
+
+	text-align: left;
+	color: #c4c4c4;
+	background: transparent;
+
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+
+	tab-size: 2;
+
+	hyphens: none;
+	overflow: auto;
+}
+
+pre[class*="language-"] {
+	border: none;
+	padding: 0.6em;
+	background: #1e1e1e;
+	overflow: auto;
+	display: block;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #6a9955;
+}
+
+.token.punctuation,
+.token.operator {
+	color: #d4d4d4;
+}
+
+.token.keyword,
+.token.atrule,
+.token.selector,
+.token.tag,
+.token.interpolation-punctuation {
+	color: #569cd6;
+}
+
+.token.operator {
+	color: #d4d4d4;
+}
+
+.token.tag {
+	color: #569cd6;
+}
+
+.token.attr-name {
+	color: #9cdcfe;
+}
+
+.token.regex {
+	color: #d16969;
+}
+
+.token.important {
+	color: #c586c0;
+	font-weight: bold;
+}
+
+.token.deleted {
+	color: #f44747;
+}
+
+.token.inserted {
+	color: #b5cea8;
+}
+
+.token.entity {
+	color: #4ec9b0;
+	cursor: help;
+}
+
+.token.namespace {
+	opacity: .8;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.parameter,
+.token.maybe-class-name {
+	color: #9cdcfe;
+}
+
+.token.literal-property,
+.token.attr-name {
+	color: #9cdcfe;
+}
+
+.token.template-string,
+.token.template-punctuation {
+	color: #ce9178;
+}
+
+.token.interpolation-punctuation {
+	color: #569cd6;
+}
+
+.token.decorator,
+.token.annotation {
+	color: #dcdcaa;
+}
+
+.token.builtin,
+.token.type-annotation {
+	color: #4ec9b0;
+}
+
+.token.control,
+.token.directive,
+.token.important {
+	color: #c586c0;
+}
+
+.token.important {
+  font-weight: bold;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.template-string,
+.token.template-punctuation,
+.token.url {
+	color: #ce9178;
+}
+
+.token.number,
+.token.boolean {
+	color: #b5cea8;
+}
+
+.token.function,
+.token.function-variable,
+.token.decorator,
+.token.annotation {
+  color: #dcdcaa;
+}
+
+.token.class-name,
+.token.builtin,
+.token.type-annotation,
+.token.maybe-class-name,
+.token.entity,
+.token.namespace {
+  color: #4ec9b0;
+}
+
+.token.variable,
+.token.parameter,
+.token.attr-name,
+.token.literal-property {
+  color: #9cdcfe;
+}
+
+.token.constant,
+.token.property,
+.token.symbol {
+  color: #4fc1ff;
+}
+
+.token.regex,
+.token.regex-source {
+  color: #d16969;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}

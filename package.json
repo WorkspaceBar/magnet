@@ -1,0 +1,100 @@
+{
+	"name": "Magnet",
+	"displayName": "Magnet",
+	"description": "Your AI Companion For VSCode",
+	"publisher": "MadPenWin",
+	"icon": "img/logo.png",
+	"engines": {
+		"vscode": "^1.125.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"version": "0.2.0",
+	"main": "./out/extension.js",
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "messagePanel",
+					"title": "Magnet",
+					"icon": "img/comment.svg"
+				}
+			]
+		},
+		"views": {
+			"messagePanel": [
+				{
+					"id": "chatPanel",
+					"name": "chat-panel",
+					"type": "webview",
+					"icon": "img/comment.svg"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "magnet.openSettings",
+				"title": "Magnet: Settings",
+				"icon": "$(gear)"
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "magnet.openSettings",
+					"when": "view == chatPanel",
+					"group": "navigation"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Magnet",
+			"properties": {
+				"magnet.chat": {
+					"type": "string",
+					"default": "qwen2.5-coder:3b"
+				},
+				"magnet.autocomplete": {
+					"type": "string",
+					"default": "qwen2.5-coder:3b"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "node esbuild.js",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.10",
+		"@types/node": "24.x",
+		"@types/vscode": "^1.125.0",
+		"@vscode/test-cli": "^0.0.15",
+		"@vscode/test-electron": "^3.0.0",
+		"esbuild": "^0.28.2",
+		"eslint": "^10.5.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.61.1"
+	},
+	"overrides": {
+		"diff": "^8.0.4",
+		"serialize-javascript": "^7.0.6"
+	},
+	"dependencies": {
+		"@huggingface/transformers": "^4.3.1",
+		"@picovoice/pvrecorder-node": "^1.2.9",
+		"systeminformation": "^5.33.15"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/madpenwin/magnet"
+	}
+}
