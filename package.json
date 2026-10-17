@@ -3,14 +3,14 @@
 	"displayName": "Magnet",
 	"description": "Your AI Companion For VSCode",
 	"publisher": "MadPenWin",
-	"icon": "img/logo.png",
+	"icon": "img/VividRedLogo.png",
 	"engines": {
 		"vscode": "^1.125.0"
 	},
 	"categories": [
 		"Other"
 	],
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"main": "./out/extension.js",
 	"activationEvents": [
 		"onStartupFinished"

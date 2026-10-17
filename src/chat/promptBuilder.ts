@@ -15,8 +15,14 @@ export type NormalChat = {
 };
 
 // How comments are written in each language, keyed by the VSCode language id
-type CommentStyle = { line: string | null; blockOpen: string | null; blockClose: string | null };
+type CommentStyle = {
+	line: string | null;
+	blockOpen: string | null;
+	blockClose: string | null
+};
 
+// Comment styles for different languages
+// These are used to format the prompt instruction
 const SLASH: CommentStyle = { line: "//", blockOpen: "/*", blockClose: "*/" };
 const HASH: CommentStyle = { line: "#", blockOpen: null, blockClose: null };
 const DASH: CommentStyle = { line: "--", blockOpen: "/*", blockClose: "*/" };
@@ -87,10 +93,12 @@ const commentRule = (language: string): string => {
 		return `Comments must use ${ language } syntax only. A short comment that fits on one line uses \`${ line }\`. A long comment that needs a detailed explanation uses \`${ blockOpen } comment ${ blockClose }\` with no extra "*" characters and tabs for indentation in multi-line comments. Never use any other comment syntax.`;
 	};
 
+	// Line comment
 	if (line) {
 		return `Comments must use ${ language } syntax only. Every comment uses \`${ line }\` at the start of each comment line. Never use any other comment syntax.`;
 	};
 
+	// Block comment
 	return `Comments must use ${ language } syntax only. Every comment uses \`${ blockOpen } comment ${ blockClose }\`. Never use any other comment syntax.`;
 };
 
@@ -133,6 +141,7 @@ export class PromptBuilder {
 			return "";
 		};
 
+		// Read the first few files from each workspace folder -> provide context for the code fix
 		const results: vscode.Uri[][] = await Promise.all(
 			folders.map(folder =>
 				vscode.workspace.findFiles(
@@ -143,7 +152,11 @@ export class PromptBuilder {
 			)
 		);
 
+		// Flatten the array of arrays into a single array of URIs
 		const uris: vscode.Uri[] = results.flat();
+		if (uris.length === 0) {
+			return "";
+		};
 
 		// The file being edited is the most relevant one, so it gets first claim on the size budget
 		const activeKey: string | undefined = sourceUri?.toString();

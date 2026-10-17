@@ -60,6 +60,7 @@ export class UserInputLayout {
 		this.sendButton.addEventListener("click", () => this.submit());
 	};
 
+	// User submit a message
 	submit() {
 		const text = this.textarea.value.trim();
 		if (!text) {

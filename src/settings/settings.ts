@@ -1,6 +1,8 @@
 import * as vscode from "vscode"; // Talk to the editor
 import { OLLAMA_SERVER_URL } from "../chat/constants.js"; // Get ollama server url
 
+export let OLLAMA_MODEL: string | undefined = "qwen2.5-coder:3b"; // Default model (global variable)
+
 // Chat panel settings section for model configurations
 export class Settings {
 
@@ -45,14 +47,28 @@ export class Settings {
 		// If models check passed, show all the models that was installed
 		const currentConfigType: string = Settings.getConfigType(targetConfig.key);
 		const pickedConfigType: { label: string, description: string } | undefined = await vscode.window.showQuickPick(
-			models.map(name => ({ label: name, description: name === currentConfigType ? " <- in use" : "" })), {
+			models.map(name => ({
+				label: name,
+				description: name === currentConfigType ? " <- in use" : ""
+			})), {
 				title: targetConfig.label,
 				placeHolder: "Select a model"
 			}
 		);
 
+		let currentPickedModel: string | undefined = OLLAMA_MODEL;
+
 		if (!pickedConfigType) {
 			return; // Guard check
+		};
+
+		if (currentConfigType !== pickedConfigType.label) {
+			currentPickedModel = pickedConfigType.label;
+		};
+
+		// Update settings
+		if (currentPickedModel !== OLLAMA_MODEL) {
+			OLLAMA_MODEL = currentPickedModel;
 		};
 
 		// Wait for update response of settings

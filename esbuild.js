@@ -1,3 +1,4 @@
+// This script builds the extension using esbuild
 const esbuild = require("esbuild");
 esbuild.build({
 	entryPoints: ["./src/extension.ts"],

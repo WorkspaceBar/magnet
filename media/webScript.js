@@ -53,14 +53,6 @@ window.addEventListener("message", e => {
 			chatPanel.updateMemStats(message.text);
 			break;
 
-		case "voiceStatus":
-			chatPanel.inputLayout.setVoiceStatus(message.state, message.text);
-			break;
-
-		case "voiceSubmit":
-			chatPanel.inputLayout.showVoiceText(message.text);
-			break;
-
 		case "clearChat":
 			chatPanel.clearChat();
 			break;

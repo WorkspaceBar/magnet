@@ -1,5 +1,6 @@
 import { TextDecoder } from "util";
-import { KEEP_ALIVE, MODEL, OLLAMA_SERVER_URL, STATS_INTERVAL } from "./constants.js";
+import { KEEP_ALIVE, OLLAMA_SERVER_URL, STATS_INTERVAL } from "./constants.js";
+import { OLLAMA_MODEL } from '../settings/settings.js';
 import type { Memory } from "./types";
 
 // Entry of ollama's "GET /api/ps" response
@@ -38,7 +39,7 @@ export class OllamaClient {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					model: MODEL,
+					model: OLLAMA_MODEL,
 					messages,
 					stream: true,
 					keep_alive: KEEP_ALIVE
@@ -50,6 +51,7 @@ export class OllamaClient {
 				throw err;
 			};
 
+			// Handle network error
 			throw new Error(`Cannot reach ollama at ${ OLLAMA_SERVER_URL }`);
 		};
 

@@ -71,6 +71,7 @@ export class ChatPanelContainer {
 		this.dispatch(text);
 	};
 
+	// Send the user's message to the extension for processing
 	dispatch(text) {
 		this.busy = true;
 		vscode.postMessage({ type: "userMessage", text: text });
@@ -91,6 +92,7 @@ export class ChatPanelContainer {
 		this.dispatch(next.text);
 	};
 
+	// Append a message to the chat, without sending it to the extension
 	appendMessage(role, text) {
 		this.addElement(new MessageLayout(role, text).render());
 		this.scrollToBottom();
@@ -139,6 +141,7 @@ export class ChatPanelContainer {
 		this.fillTimer = setTimeout(() => this.fillIfNotScrollable(), 150);
 	};
 
+	// If the list is not scrollable, it means there are no more older messages to load
 	fillIfNotScrollable() {
 		const box = this.messageElement;
 		if (box.clientHeight === 0) {
@@ -166,6 +169,7 @@ export class ChatPanelContainer {
 		};
 	};
 
+	// Update the thinking text in real time as the AI processes the request
 	updateThinkingChunk(text) {
 		if (!this.activeStreamElement) {
 			this.startThinking();
@@ -178,6 +182,7 @@ export class ChatPanelContainer {
 		this.scrollToBottom();
 	};
 
+	// Start streaming the content of the assistant's response
 	startStreamContent() {
 		if (this.activeStreamElement) {
 			if (this.activeStreamElement.classList.contains("assistant-thinking")) {
@@ -204,6 +209,7 @@ export class ChatPanelContainer {
 		this.scrollToBottom();
 	};
 
+	// Update the streaming text in real time as the AI processes the request
 	updateStreamChunk(text) {
 		if (!this.activeStreamElement || this.activeStreamElement.classList.contains("assistant-thinking")) {
 			this.startStreamContent();

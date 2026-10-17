@@ -65,6 +65,7 @@ export class Telemetry {
 		let running: boolean = false;
 		let disposed: boolean = false;
 
+		// Polls the stats every "intervalMs" milliseconds
 		const tick: () => Promise<void> = async (): Promise<void> => {
 			if (running || disposed) {
 				return;

@@ -6,6 +6,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 	private static readonly DEBOUNCE = 450; // Time of silence before suggesting
 	private static readonly CONTEXT_LINES = 40; // Number of lines to consider for context
 
+	// Debounce timer
 	buildPrompt(
 		languageId: string,
 		prefix: string,
@@ -22,7 +23,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 		const isCommentAtCursor = linePrefix.trimEnd().endsWith(commentToken);
 
 		// Determine if a space should be prepended to the comment
-		let shouldPrependSpace = false;
+		let shouldPrependSpace: boolean = false;
 		if (isComment && !isCommentAtCursor) {
 			// Check if there's a space before the comment token
 			if (linePrefix.trim().includes(commentToken) && linePrefix.trim().lastIndexOf(commentToken) === linePrefix.trim().length - commentToken.length) {
@@ -35,6 +36,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 			shouldPrependSpace = true;
 		}
 
+		// Build the prompt
 		if (isComment) {
 			const target: string = suffix.trim()
 				? suffix.split(/\r?\n/).slice(0, 15).join("\n")
@@ -53,6 +55,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 			};
 		};
 
+		// Build the prompt for non comment lines
 		return {
 			isComment,
 			isCommentAtCursor,
@@ -77,6 +80,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 		};
 	};
 
+	// Provide the context inline items
 	async provideInlineCompletionItems(
 		document: vscode.TextDocument,
 		position: vscode.Position,
@@ -88,7 +92,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 			return;
 		};
 
-		const contextLines = AutoComplete.CONTEXT_LINES;
+		const contextLines: number = AutoComplete.CONTEXT_LINES;
 
 		const startLine: number = Math.max(0, position.line - contextLines);
 		const endLine: number = Math.min(document.lineCount - 1, position.line + contextLines);
@@ -107,7 +111,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 		token.onCancellationRequested(() => controller.abort());
 
 		try {
-			const response = await fetch(`${ OLLAMA_SERVER_URL}/api/generate`, {
+			const response: Response | undefined = await fetch(`${ OLLAMA_SERVER_URL}/api/generate`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				signal: controller.signal,
@@ -134,7 +138,7 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 			const data: { response?: string; } = await response.json() as { response?: string };
 
 			// Strip accidental code fences
-			let text = data.response ?? "";
+			let text: string = data.response ?? "";
 			text = text.replace(/^```[\w+#.-]*\r?\n?/, "").replace(/\r?\n?```\s*$/, "");
 
 			// Clean the comment after the model responds
@@ -147,10 +151,12 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 				text = text.replace(/ {2}(?!\t)/g, "\t");
 			};
 
+			// Autocomplete mode: strip the prefix and suffix
 			if (!text.trim() || token.isCancellationRequested) {
 				return;
 			};
 
+			// Return the completion item
 			return [new vscode.InlineCompletionItem(text, new vscode.Range(position, position))];
 		} catch {
 			return; // Model offline

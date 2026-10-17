@@ -22,6 +22,7 @@ export class MessageLayout {
 		this.text = text;
 	};
 
+	// Render the message bubble to the DOM
 	render() {
 		const element = document.createElement("div");
 		element.className = "message-bubble " + this.role;
