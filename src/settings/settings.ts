@@ -1,7 +1,8 @@
 import * as vscode from "vscode"; // Talk to the editor
 import { OLLAMA_SERVER_URL } from "../chat/constants.js"; // Get ollama server url
 
-export let OLLAMA_MODEL: string | undefined = "qwen2.5-coder:3b"; // Default model (global variable)
+export let OLLAMA_MODEL_CHAT: string | undefined = "qwen2.5-coder:3b"; // Default model (global variable)
+export let OLLAMA_MODEL_AUTOCOMPLETE: string | undefined = "qwen2.5-coder:3b"; // Default model (global variable)
 
 // Chat panel settings section for model configurations
 export class Settings {
@@ -44,35 +45,42 @@ export class Settings {
 			return;
 		};
 
-		// If models check passed, show all the models that was installed
-		const currentConfigType: string = Settings.getConfigType(targetConfig.key);
-		const pickedConfigType: { label: string, description: string } | undefined = await vscode.window.showQuickPick(
-			models.map(name => ({
+		// Build the model list, prepending a "Disabled" option
+		const modelItems = [
+			{ 
+				label: "$(circle-slash) Disabled", 
+				description: `(turn off ${ targetConfig.key } feature)`, 
+				modelName: "disabled" 
+			},
+			...models.map(name => ({
 				label: name,
-				description: name === currentConfigType ? " <- in use" : ""
-			})), {
+				description: name === Settings.getConfigType(targetConfig.key) ? " <- in use" : "",
+				modelName: name
+			}))
+		];
+
+		// If models check passed, show all the models that was installed
+		const pickedConfigType: { label: string; description: string; modelName: string; } | undefined = await vscode.window.showQuickPick(
+			modelItems, {
 				title: targetConfig.label,
-				placeHolder: "Select a model"
+				placeHolder: "Select a model or disable"
 			}
 		);
-
-		let currentPickedModel: string | undefined = OLLAMA_MODEL;
 
 		if (!pickedConfigType) {
 			return; // Guard check
 		};
 
-		if (currentConfigType !== pickedConfigType.label) {
-			currentPickedModel = pickedConfigType.label;
-		};
-
-		// Update settings
-		if (currentPickedModel !== OLLAMA_MODEL) {
-			OLLAMA_MODEL = currentPickedModel;
+		const selectedValue: string = pickedConfigType.modelName;
+		if (targetConfig.key === "chat") {
+			OLLAMA_MODEL_CHAT = selectedValue ? selectedValue : undefined; // Assign new string value to ollama chat
+		} else {
+			OLLAMA_MODEL_AUTOCOMPLETE = selectedValue ? selectedValue : undefined; // Assign new string value to ollama autocomplete
 		};
 
 		// Wait for update response of settings
-		await vscode.workspace.getConfiguration("magnet").update(targetConfig.key, pickedConfigType.label, vscode.ConfigurationTarget.Global);
-		vscode.window.showInformationMessage(`${ targetConfig.label } set to ${ pickedConfigType.label }`);
+		await vscode.workspace.getConfiguration("magnet").update(targetConfig.key, selectedValue, vscode.ConfigurationTarget.Global);
+		const displayMessage: string = selectedValue === "" ? "disabled" : selectedValue;
+		vscode.window.showInformationMessage(`${ targetConfig.label } set to ${ displayMessage }`);
 	};
 };

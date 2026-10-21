@@ -141,13 +141,6 @@ message-bubble pre {
 	align-self: flex-end; /* Pushes individual button actions to the bottom right */
 }
 
-.button-group {
-	height: fit-content;
-	display: flex;
-	justify-content: flex-end; /* Aligns both buttons side-by-side at the bottom right */
-	background-color: var(--user-input-bg-clr);
-}
-
 #user-input {
 	padding: 9.6px;
 	width: 100%;
@@ -162,6 +155,15 @@ message-bubble pre {
 	resize: none;
 }
 
+.button-group {
+	gap: 9.6px;
+	height: fit-content;
+	display: flex;
+	justify-content: flex-end; /* Aligns both buttons side-by-side at the bottom right */
+	background-color: var(--user-input-bg-clr);
+	display: flex;
+}
+
 #send-button {
 	height: 42px;
 	width: 42px;
@@ -169,20 +171,12 @@ message-bubble pre {
 	color: var(--send-msg-btn-txt-clr);
 	border: none;
 	outline: none;
+	border-radius: 100%;
 	background-color: var(--send-msg-btn-bg-clr);
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-#send-button:hover {
-	background-color: var(--send-msg-btn-hover-bg-clr);
-}
-
-#send-button img {
-	vertical-align: middle;
-	pointer-events: none;
 }
 
 .code-block-wrapper {

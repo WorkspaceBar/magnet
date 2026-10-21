@@ -1,8 +1,11 @@
 import * as vscode from "vscode"; // Talk to the editor
 import { OLLAMA_SERVER_URL } from "../chat/constants.js"; // Get ollama server url
+import { OLLAMA_MODEL_AUTOCOMPLETE } from "../settings/settings.js"; // Get current ollama model for autocomplete mode
 
 // Autocomplete mode
 export class AutoComplete implements vscode.InlineCompletionItemProvider {
+	static enabled = true; // Set by the webview button
+
 	private static readonly DEBOUNCE = 450; // Time of silence before suggesting
 	private static readonly CONTEXT_LINES = 40; // Number of lines to consider for context
 
@@ -108,6 +111,16 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 		const { isComment, prompt } = this.buildPrompt(document.languageId, prefix, suffix, linePrefix);
 		const controller: AbortController = new AbortController();
 
+		if (!AutoComplete.enabled) {
+			return;
+		}
+
+		const currentOllamaAutocompleteModel: string | undefined = OLLAMA_MODEL_AUTOCOMPLETE;
+		if (!currentOllamaAutocompleteModel) {
+			console.error("Magnet: autocomplete model is empty.");
+			return;
+		}
+
 		token.onCancellationRequested(() => controller.abort());
 
 		try {
@@ -116,15 +129,22 @@ export class AutoComplete implements vscode.InlineCompletionItemProvider {
 				headers: { "Content-Type": "application/json" },
 				signal: controller.signal,
 				body: JSON.stringify({
-					model: "qwen2.5-coder:7b",
+					model: currentOllamaAutocompleteModel,
 					comment: isComment + prompt,
 					prompt: `<|fim_prefix|>${ prefix }<|fim_suffix|>${ suffix }<|fim_middle|>`, // Autocomplete mode
 					raw: true,
 					stream: false,
 					options: {
-						num_predict: 64,
+						num_predict: 64, // number of tokens to predict
 						temperature: 0.1,
-						top_p: 0.9,
+						top_p: 0.9, // nucleus sampling
+						top_k: 40,
+						repetition_penalty: 1.15,
+						bad_words: [],
+						max_tokens: 2048,
+						min_tokens: 1,
+						presence_penalty: 0,
+						frequency_penalty: 0,
 						num_ctx: 9000,
 						stop: ["<|fim_pad|>", "<|endoftext|>", "<|file_sep|>", "\n\n"]
 					}

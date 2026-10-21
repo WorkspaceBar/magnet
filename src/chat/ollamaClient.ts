@@ -1,6 +1,6 @@
 import { TextDecoder } from "util";
 import { KEEP_ALIVE, OLLAMA_SERVER_URL, STATS_INTERVAL } from "./constants.js";
-import { OLLAMA_MODEL } from '../settings/settings.js';
+import { OLLAMA_MODEL_CHAT } from '../settings/settings.js';
 import type { Memory } from "./types";
 
 // Entry of ollama's "GET /api/ps" response
@@ -39,7 +39,7 @@ export class OllamaClient {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					model: OLLAMA_MODEL,
+					model: OLLAMA_MODEL_CHAT,
 					messages,
 					stream: true,
 					keep_alive: KEEP_ALIVE
